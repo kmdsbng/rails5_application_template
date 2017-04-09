@@ -29,10 +29,10 @@ gem 'bootswatch-rails'
 gem 'font-awesome-rails'
 
 # Fast Haml
-gem 'faml'
+gem 'slim'
 
-# Form Builders
-gem 'simple_form'
+## Form Builders
+#gem 'simple_form'
 
 # Pagenation
 gem 'kaminari'
@@ -43,24 +43,24 @@ gem 'kaminari'
 # Process Management
 gem 'foreman'
 
-# Presenter Layer Helper
-gem 'cells'
-gem 'cells-haml'
+## Presenter Layer Helper
+#gem 'cells'
+#gem 'cells-haml'
 
-# Configuration using ENV
-gem 'dotenv-rails'
+## Configuration using ENV
+#gem 'dotenv-rails'
 
 # ============================
 # Environment Group
 # ============================
 group :development do
-  gem 'erb2haml'
+  #gem 'erb2haml'
 
   # help to kill N+1
   gem 'bullet'
 
   # To generate haml view by scaffold or other generate command
-  gem 'haml-rails'
+  #gem 'haml-rails'
 
   # Syntax Checker
   # hook event pre-commit, pre-push
@@ -76,7 +76,7 @@ group :development do
   gem 'coffeelint', require: false
 
   # Syntax checker for HAML
-  gem 'haml-lint', require: false
+  #gem 'haml-lint', require: false
 
   # Syntax checker for CSS
   gem 'ruby_css_lint', require: false
@@ -147,7 +147,7 @@ application  do
     # Set generator
     config.generators do |g|
       g.orm :active_record
-      g.template_engine :haml
+      g.template_engine :slim
       g.test_framework :rspec, :fixture => true
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
       g.view_specs false
@@ -182,10 +182,10 @@ insert_into_file 'config/environments/production.rb',%q{
 # set Japanese locale
 get 'https://raw.github.com/svenfuchs/rails-i18n/master/rails/locale/ja.yml', 'config/locales/ja.yml'
 
-# erb => haml
-Bundler.with_clean_env do
-  run 'bundle exec rake haml:replace_erbs'
-end
+## erb => haml
+#Bundler.with_clean_env do
+#  run 'bundle exec rake haml:replace_erbs'
+#end
 
 # Bootstrap/Bootswach/Font-Awesome
 run 'rm -rf app/assets/stylesheets/application.css'
@@ -214,21 +214,21 @@ get 'https://raw.github.com/morizyun/rails5_application_template/master/config/p
 # Procfile
 run "echo 'web: bundle exec puma -C config/puma.rb' > Procfile"
 
-# Error Notification
-# ----------------------------------------------------------------
-if yes?('Do you use Airbrake/Errbit? [yes or ELSE]')
-  insert_into_file 'Gemfile',%q{
-
-# Exception Catcher
-gem 'airbrake'
-}, after: "gem 'foreman'"
-
-  run 'wget https://raw.github.com/morizyun/rails5_application_template/tree/master/config/initializers/airbrake.rb -P config/initializers'
-  run "echo '\nAIRBRAKE_HOST=\nAIRBRAKE_PROJECT_ID=\nAIRBRAKE_PROJECT_KEY=\n'"
-  run "echo 'Please Set AIRBRAKE_HOST, AIRBRAKE_PROJECT_ID, AIRBRAKE_PROJECT_KEY in your environment variables'"
-
-  run 'bundle install --path vendor/bundle --jobs=4 --without production'
-end
+## Error Notification
+## ----------------------------------------------------------------
+#if yes?('Do you use Airbrake/Errbit? [yes or ELSE]')
+#  insert_into_file 'Gemfile',%q{
+#
+## Exception Catcher
+#gem 'airbrake'
+#}, after: "gem 'foreman'"
+#
+#  run 'wget https://raw.github.com/morizyun/rails5_application_template/tree/master/config/initializers/airbrake.rb -P config/initializers'
+#  run "echo '\nAIRBRAKE_HOST=\nAIRBRAKE_PROJECT_ID=\nAIRBRAKE_PROJECT_KEY=\n'"
+#  run "echo 'Please Set AIRBRAKE_HOST, AIRBRAKE_PROJECT_ID, AIRBRAKE_PROJECT_KEY in your environment variables'"
+#
+#  run 'bundle install --path vendor/bundle --jobs=4 --without production'
+#end
 
 # Rspec
 # ----------------------------------------------------------------
@@ -277,9 +277,9 @@ run 'rm -rf test'
 
 # Checker
 # ----------------------------------------------------------------
-get 'https://raw.github.com/morizyun/rails5_application_template/master/root/.rubocop.yml', '.rubocop.yml'
+#get 'https://raw.github.com/morizyun/rails5_application_template/master/root/.rubocop.yml', '.rubocop.yml'
 get 'https://raw.github.com/morizyun/rails5_application_template/master/root/.overcommit.yml', '.overcommit.yml'
-get 'https://raw.github.com/morizyun/rails5_application_template/master/root/.haml-lint.yml', '.haml-lint.yml'
+#get 'https://raw.github.com/morizyun/rails5_application_template/master/root/.haml-lint.yml', '.haml-lint.yml'
 
 # Rake DB Create
 # ----------------------------------------------------------------
@@ -298,35 +298,35 @@ end
 
 # Guard
 # ----------------------------------------------------------------
-if yes?('Do you use Guard? [yes or ELSE]')
-  insert_into_file 'Gemfile',%q{
+#if yes?('Do you use Guard? [yes or ELSE]')
+#  insert_into_file 'Gemfile',%q{
+#
+#  # Handle events on file modifications
+#  gem 'guard-rspec',      require: false
+#  gem 'guard-rubocop',    require: false
+#  gem 'guard-livereload', require: false
+#}, after: "gem 'factory_girl_rails'"
+#
+#  Bundler.with_clean_env do
+#    run 'bundle install --path vendor/bundle --jobs=4 --without production'
+#    run 'bundle exec guard init rspec rubocop livereload'
+#  end
+#end
 
-  # Handle events on file modifications
-  gem 'guard-rspec',      require: false
-  gem 'guard-rubocop',    require: false
-  gem 'guard-livereload', require: false
-}, after: "gem 'factory_girl_rails'"
+## Wercker(CI)
+## ----------------------------------------------------------------
+#if yes?('Do you use wercker? [yes or ELSE]')
+#  run 'wget https://raw.githubusercontent.com/morizyun/rails5_application_template/master/root/wercker.yml'
+#  gsub_file 'wercker.yml', /%RUBY_VERSION/, ruby_version
+#  run "echo 'Please Set SLACK_URL to https://app.wercker.com'"
+#end
 
-  Bundler.with_clean_env do
-    run 'bundle install --path vendor/bundle --jobs=4 --without production'
-    run 'bundle exec guard init rspec rubocop livereload'
-  end
-end
-
-# Wercker(CI)
-# ----------------------------------------------------------------
-if yes?('Do you use wercker? [yes or ELSE]')
-  run 'wget https://raw.githubusercontent.com/morizyun/rails5_application_template/master/root/wercker.yml'
-  gsub_file 'wercker.yml', /%RUBY_VERSION/, ruby_version
-  run "echo 'Please Set SLACK_URL to https://app.wercker.com'"
-end
-
-# Rubocop Auto correct
-# ----------------------------------------------------------------
-Bundler.with_clean_env do
-  run 'bundle exec rubocop --auto-correct'
-  run 'bundle exec rubocop --auto-gen-config'
-end
+## Rubocop Auto correct
+## ----------------------------------------------------------------
+#Bundler.with_clean_env do
+#  run 'bundle exec rubocop --auto-correct'
+#  run 'bundle exec rubocop --auto-gen-config'
+#end
 
 # git init
 # ----------------------------------------------------------------
